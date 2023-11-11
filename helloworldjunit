@@ -1,0 +1,57 @@
+Certainly! To write a JUnit test case for your program, you first need to make your code more testable. In Java, this often involves separating the logic from the presentation (in this case, the `System.out.println` statement). One way to do this is by using a method that returns the message instead of printing it directly. Here's an updated version of your `HelloWorld` class:
+
+```java
+public class HelloWorld {
+    public static String getMessage() {
+        return "Hello, World!";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getMessage());
+    }
+}
+```
+
+Now, you can write a JUnit test for the `getMessage` method. Below is a simple JUnit test class using the JUnit 5 framework. Make sure you have the necessary dependencies in your Maven `pom.xml` file:
+
+```xml
+<dependencies>
+    <!-- Other dependencies -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>5.8.0</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.8.0</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+Now, you can write a JUnit test:
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class HelloWorldTest {
+    @Test
+    public void testGetMessage() {
+        assertEquals("Hello, World!", HelloWorld.getMessage());
+    }
+}
+```
+
+Make sure this test class is placed in the `src/test/java` directory of your Maven project.
+
+Once your project is set up, you can run the tests using Maven. Open a terminal in the project directory and run:
+
+```bash
+mvn test
+```
+
+This will compile your code and execute the JUnit tests. If everything is set up correctly, you should see output indicating that the test passed.
