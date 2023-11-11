@@ -1,0 +1,96 @@
+Certainly! Below is an example of a simple Java program with JUnit test cases, and it's structured as a Maven project.
+
+1. Create a Maven project structure:
+
+```plaintext
+my-maven-project
+|-- src
+|   |-- main
+|   |   `-- java
+|   |       `-- com
+|   |           `-- example
+|   |               `-- Calculator.java
+|   `-- test
+|       `-- java
+|           `-- com
+|               `-- example
+|                   `-- CalculatorTest.java
+|-- pom.xml
+```
+
+2. Define the Calculator class in `src/main/java/com/example/Calculator.java`:
+
+```java
+package com.example;
+
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+}
+```
+
+3. Write JUnit test cases for the Calculator class in `src/test/java/com/example/CalculatorTest.java`:
+
+```java
+package com.example;
+
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class CalculatorTest {
+    Calculator calculator = new Calculator();
+
+    @Test
+    public void testAdd() {
+        assertEquals(5, calculator.add(2, 3));
+    }
+
+    @Test
+    public void testSubtract() {
+        assertEquals(2, calculator.subtract(5, 3));
+    }
+}
+```
+
+4. Configure Maven in `pom.xml`:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>my-maven-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+5. Run the tests using Maven:
+
+Open a terminal, navigate to the project root directory (`my-maven-project`), and run:
+
+```bash
+mvn test
+```
+
+This will compile the code, execute the JUnit tests, and report the results. If everything is set up correctly, you should see output indicating that the tests passed.
