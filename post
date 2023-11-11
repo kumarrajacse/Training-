@@ -1,0 +1,45 @@
+In a Jenkinsfile, you can configure the JaCoCo coverage reporting using the `jacoco` step. Here's how you can modify your Jenkinsfile to include the JaCoCo coverage reporting:
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your Maven project
+                sh 'mvn clean package'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Archive the JUnit test results
+            junit 'target/surefire-reports/**/*.xml'
+        }
+
+        success {
+            // Record JaCoCo coverage report
+            jacoco(execPattern: '**/target/jacoco.exec')
+        }
+    }
+}
+```
+
+In this example:
+
+- The `jacoco` step is used to record the JaCoCo coverage report.
+- The `execPattern` parameter is set to `**/target/jacoco.exec`, specifying the path to the JaCoCo execution data file.
+
+This assumes that your Maven build generates the JaCoCo coverage report in the default location (`target` directory) with the file name `jacoco.exec`. If your configuration is different, adjust the `execPattern` accordingly.
+
+Make sure to replace the placeholder `**/target/jacoco.exec` with the actual path to your JaCoCo execution data file.
+
+Save this Jenkinsfile in the root of your project repository, and when you run your Jenkins job, it should record and display the JaCoCo coverage report after a successful build.
