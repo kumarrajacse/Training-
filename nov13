@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'Maven' // Make sure 'Maven' is configured in Jenkins Global Tool Configuration
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                script {
+                    // Build and test your project
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Code Coverage') {
+            steps {
+                script {
+                    // Generate JaCoCo coverage report
+                    sh 'mvn jacoco:report'
+                }
+            }
+        }
+
+        stage('Publish Code Coverage') {
+            steps {
+                script {
+                    // Publish JaCoCo code coverage report to Jenkins
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/site/jacoco',
+                        reportFiles: 'index.html',
+                        reportName: 'JaCoCo Code Coverage'
+                    ])
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Archive the JaCoCo XML report for further analysis or archiving
+            archiveArtifacts artifacts: 'target/site/jacoco/jacoco.xml', allowEmptyArchive: true
+        }
+    }
+}
