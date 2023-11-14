@@ -1,0 +1,25 @@
+Maven itself does not have built-in linting capabilities, but we can use plugins to achieve linting-like functionality for our Java projects. Linting is a process of static code analysis to identify potential issues, errors, or code style violations in our codebase.
+
+In Maven, we  can use the PMD (Programming Mistake Detector) plugin for code analysis and linting. PMD is a source code analyzer that finds common programming flaws like unused variables, empty catch blocks, and so on.
+In the pom.xml file. we can add  PMD plugin configuration within the <build> section ,in  PMD ruleset. we  can create our own ruleset .
+
+Run the PMD checks:
+ 
+mvn verify
+
+This will execute the PMD plugin during the verify phase and generate a report on code violations
+
+The Linting stage runs the PMD analysis and archives the generated reports.
+
+View the PMD Reports:
+
+
+
+Once the pipeline completes, we can view the PMD trend report in the Jenkins build job under the "PMD Report" link.
+
+we can  find the PMD analysis results in the target/pmd directory. Look for a file named pmd.xml. This XML file contains the details of the issues found by PMD.
+
+Remember that the specific location and filename can be customized using the plugin's configuration, but the default is the target/pmd directory. we  can specify a different output directory or filename if needed by configuring the <outputDirectory> and <outputFile> elements in the plugin's configuration.
+
+ 
+
