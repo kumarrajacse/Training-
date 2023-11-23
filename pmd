@@ -1,0 +1,28 @@
+<build>
+    <plugins>
+        <!-- ... other plugins ... -->
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.15.0</version> <!-- Use the latest version available -->
+            <executions>
+                <execution>
+                    <id>pmd-check</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <rulesets>
+                    <!-- You can customize the ruleset or use the default -->
+                    <ruleset>rulesets/java/quickstart.xml</ruleset>
+                </rulesets>
+            </configuration>
+        </plugin>
+
+        <!-- ... other plugins ... -->
+    </plugins>
+</build>
