@@ -48,3 +48,73 @@
     <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
     <!-- Add more rules as needed -->
 </ruleset>
+========================================================================
+
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out the code from your version control system
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the Maven project
+                script {
+                    def mvnHome = tool 'Maven'
+                    sh "${mvnHome}/bin/mvn clean install"
+                }
+            }
+        }
+
+        stage('Run PMD') {
+            steps {
+                script {
+                    // Set up PMD options
+                    def pmdHome = tool 'PMD'
+                    def pmdReportFile = 'target/pmd-report.xml'
+                    def sourceCodeDir = 'src/main/java'
+
+                    // Run PMD
+                    sh """
+                        ${pmdHome}/bin/run.sh pmd \
+                        -d ${sourceCodeDir} \
+                        -f xml \
+                        -R ${pmdReportFile}
+                    """
+                }
+            }
+        }
+
+        stage('Publish PMD Report') {
+            steps {
+                // Archive the PMD report for later reference
+                archiveArtifacts artifacts: 'target/pmd-report.xml', onlyIfSuccessful: true
+
+                // Publish the PMD report to Jenkins
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: 'target',
+                    reportFiles: 'pmd-report.xml',
+                    reportName: 'PMD Report',
+                    reportTitles: 'PMD Report'
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up any temporary files or resources
+            cleanWs()
+        }
+    }
+}
